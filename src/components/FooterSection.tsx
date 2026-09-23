@@ -29,11 +29,15 @@ export const FooterSection = ({ onReopenEnvelope }: FooterSectionProps) => {
     <footer className="pt-16 pb-24 px-4 text-center border-t border-[#CAA36B]/20 bg-[#F4EFE1]/40">
       <div className="max-w-xl mx-auto flex flex-col items-center">
         
-        {/* Monograma */}
-        <div className="w-14 h-14 rounded-full bg-[#FAF7F2] border border-[#CAA36B]/40 flex items-center justify-center text-[#CAA36B] shadow-xs mb-4">
-          <span className="font-serif text-xl tracking-widest uppercase">
-            {WEDDING_DATA.couple.monogram}
-          </span>
+        {/* Monograma / Logo Oficial */}
+        <div className="w-16 h-16 rounded-full bg-[#FAF7F2] border border-[#CAA36B]/40 flex items-center justify-center p-1.5 shadow-xs mb-4 overflow-hidden">
+          {WEDDING_DATA.photos.logo ? (
+            <img src={WEDDING_DATA.photos.logo} alt="Logo Dani & Edson" className="w-full h-full object-contain" />
+          ) : (
+            <span className="font-serif text-xl tracking-widest uppercase text-[#CAA36B]">
+              {WEDDING_DATA.couple.monogram}
+            </span>
+          )}
         </div>
 
         <p className="font-script text-3xl sm:text-4xl text-[#CAA36B] mb-1">

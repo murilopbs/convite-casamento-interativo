@@ -65,6 +65,7 @@ export const WEDDING_DATA = {
   photos: {
     hero: "/assets/couple.jpg",
     waxSeal: "/assets/wax_seal.jpg",
+    logo: "/assets/logo_dani_edson.png",
     venue: "/assets/venue.jpg",
   },
 
