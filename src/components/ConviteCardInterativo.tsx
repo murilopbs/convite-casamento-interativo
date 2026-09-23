@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Calendar, 
   MapPin, 
@@ -29,6 +29,17 @@ export const ConviteCardInterativo = () => {
   const [guestAttending, setGuestAttending] = useState<'yes' | 'no'>('yes');
   const [guestCompanions, setGuestCompanions] = useState('1');
 
+  // Fechar com Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveModal(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleCopyPix = () => {
     navigator.clipboard.writeText(WEDDING_DATA.pix.pixKey);
     setCopiedPix(true);
@@ -47,7 +58,7 @@ export const ConviteCardInterativo = () => {
 
     const status = guestAttending === 'yes' ? '✅ SIM, com certeza estarei presente!' : '❌ Infelizmente não poderei comparecer.';
     const text = encodeURIComponent(
-      `Olá Daniela & Edshow! ❤️\n\n*CONFIRMAÇÃO DE PRESENÇA (Convite Digital)*\n${status}\n\n👤 *Nome:* ${guestName}\n📱 *WhatsApp:* ${guestPhone || 'Não informado'}\n👥 *Acompanhantes:* ${guestCompanions} pessoa(s)`
+      `Olá Daniela & Édson! ❤️\n\n*CONFIRMAÇÃO DE PRESENÇA (Convite Digital)*\n${status}\n\n👤 *Nome:* ${guestName}\n📱 *WhatsApp:* ${guestPhone || 'Não informado'}\n👥 *Acompanhantes:* ${guestCompanions} pessoa(s)`
     );
 
     window.open(`https://wa.me/${WEDDING_DATA.rsvp.whatsappNumber}?text=${text}`, '_blank');
@@ -56,8 +67,8 @@ export const ConviteCardInterativo = () => {
 
   // Google Calendar
   const getGoogleCalendarUrl = () => {
-    const startDate = "20261121T193000Z";
-    const endDate = "20261122T030000Z";
+    const startDate = "20270925T193000Z";
+    const endDate = "20270926T030000Z";
     const title = encodeURIComponent(WEDDING_DATA.date.calendarSummary);
     const details = encodeURIComponent(WEDDING_DATA.date.calendarDescription);
     const location = encodeURIComponent(`${WEDDING_DATA.venue.name}, ${WEDDING_DATA.venue.address}, ${WEDDING_DATA.venue.city}`);
@@ -69,18 +80,18 @@ export const ConviteCardInterativo = () => {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'SUMMARY:Casamento Daniela & Edshow',
+      'SUMMARY:Casamento Daniela & Édson',
       `DESCRIPTION:${WEDDING_DATA.date.calendarDescription}`,
       `LOCATION:${WEDDING_DATA.venue.name} - ${WEDDING_DATA.venue.address}`,
-      'DTSTART:20261121T163000',
-      'DTEND:20261122T040000',
+      'DTSTART:20270925T163000',
+      'DTEND:20270926T040000',
       'END:VCALENDAR'
     ].join('\r\n');
 
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', 'casamento-daniela-e-edshow.ics');
+    link.setAttribute('download', 'casamento-daniela-e-edson.ics');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -89,21 +100,21 @@ export const ConviteCardInterativo = () => {
   return (
     <div className="min-h-screen bg-[#E5DFD5] py-4 sm:py-10 px-2 sm:px-4 flex items-center justify-center font-sans">
       
-      {/* Moldura do Convite Mobile-First (Semelhante ao modelo do Mercado Livre) */}
-      <div className="relative w-full max-w-[430px] bg-[#FAF7F2] rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.18)] border-[6px] border-[#24211E]/90 overflow-hidden flex flex-col text-[#24211E]">
+      {/* Moldura do Convite Mobile-First */}
+      <div className="relative w-full max-w-[440px] bg-[#FAF7F2] rounded-[36px] shadow-[0_25px_60px_rgba(0,0,0,0.18)] border-[6px] border-[#24211E]/90 overflow-hidden flex flex-col text-[#24211E]">
         
         {/* TOPO: Foto do casal com degradê suave para o fundo do papel */}
         <div className="relative h-96 w-full overflow-hidden">
           <img 
             src={WEDDING_DATA.photos.hero} 
-            alt="Daniela e Edshow" 
+            alt="Daniela e Édson" 
             className="w-full h-full object-cover object-top"
           />
           {/* Degradê que funde a foto com o papel do convite */}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FAF7F2]/40 to-[#FAF7F2]" />
           
           <div className="absolute top-4 left-0 right-0 flex justify-center">
-            <span className="bg-black/30 backdrop-blur-md text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">
+            <span className="bg-black/30 backdrop-blur-md text-white text-[10px] uppercase tracking-widest px-3.5 py-1 rounded-full border border-white/20">
               Convite Oficial
             </span>
           </div>
@@ -118,17 +129,21 @@ export const ConviteCardInterativo = () => {
           </p>
 
           {/* Nomes dos Noivos em Caligrafia Elegante */}
-          <h1 className="font-script text-5xl sm:text-6xl text-[#24211E] mb-5 tracking-wide leading-tight">
+          <h1 className="font-script text-5xl sm:text-6xl text-[#24211E] mb-2 tracking-wide leading-tight">
             {WEDDING_DATA.couple.bride} <span className="text-[#CAA36B] font-serif text-3xl font-light">e</span> {WEDDING_DATA.couple.groom}
           </h1>
 
+          <p className="text-[11px] uppercase tracking-widest text-[#7A746E] font-medium mb-5">
+            {WEDDING_DATA.couple.brideFullName} & {WEDDING_DATA.couple.groomFullName}
+          </p>
+
           {/* Bloco de Data Tradicional com Linhas Laterais */}
           <div className="w-full max-w-[320px] mb-5">
-            {/* Linha superior com o mês */}
+            {/* Linha superior com o mês e ano */}
             <div className="flex items-center justify-center gap-3 mb-2">
               <span className="h-[1px] flex-1 bg-[#24211E]/40" />
               <span className="font-serif text-xs uppercase tracking-[0.3em] font-semibold text-[#24211E]">
-                {WEDDING_DATA.date.formattedMonth}
+                {WEDDING_DATA.date.formattedMonth} • {WEDDING_DATA.date.formattedYear}
               </span>
               <span className="h-[1px] flex-1 bg-[#24211E]/40" />
             </div>
@@ -165,10 +180,10 @@ export const ConviteCardInterativo = () => {
                 {WEDDING_DATA.venue.name}
               </h2>
             </div>
-            <p className="text-[11px] text-[#7A746E] italic mt-0.5">
+            <p className="text-[11px] text-[#56695B] font-semibold italic mt-0.5">
               * Cerimônia e Recepção realizadas no mesmo local
             </p>
-            <p className="text-[10px] text-[#8E867E]">
+            <p className="text-[10px] text-[#7A746E] max-w-[280px] mx-auto mt-0.5">
               {WEDDING_DATA.venue.address} • {WEDDING_DATA.venue.city}
             </p>
           </div>
@@ -191,7 +206,7 @@ export const ConviteCardInterativo = () => {
             </p>
           </div>
 
-          {/* BOTÕES CIRCULARES INTERATIVOS (Conforme a imagem enviada) */}
+          {/* BOTÕES CIRCULARES INTERATIVOS */}
           <div className="grid grid-cols-4 gap-3 w-full pt-1 mb-6">
             
             {/* 1. Confirmar Presença (RSVP) */}
@@ -257,7 +272,7 @@ export const ConviteCardInterativo = () => {
 
         </div>
 
-        {/* DETALHE BOTÂNICO FLORAL INFERIOR (FOLHAS DE EUCALIPTO / FLORAIS) */}
+        {/* DETALHE BOTÂNICO FLORAL INFERIOR */}
         <div className="relative w-full h-14 bg-gradient-to-t from-[#E8DFD0] to-transparent flex items-center justify-center overflow-hidden">
           <div className="flex items-center gap-4 text-[#56695B]/40">
             <span className="text-xl">🌿</span>
@@ -269,26 +284,33 @@ export const ConviteCardInterativo = () => {
       </div>
 
       {/* ============================================================== */}
-      {/* MODAL 1: PRESENTE PIX */}
+      {/* MODAIS INTERATIVOS COM FACILIDADE TOTAL DE FECHAR               */}
       {/* ============================================================== */}
+
+      {/* MODAL 1: PRESENTE PIX */}
       {activeModal === 'pix' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-sm bg-[#FAF7F2] rounded-3xl border border-[#CAA36B]/40 shadow-2xl p-6 text-center text-[#24211E]">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveModal(null); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in"
+        >
+          <div className="relative w-full max-w-sm max-h-[90vh] bg-[#FAF7F2] rounded-3xl border-2 border-[#CAA36B]/50 shadow-2xl p-5 sm:p-6 text-center text-[#24211E] overflow-y-auto overscroll-contain">
             <button 
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-[#ECDCC2] text-[#756E65]"
+              type="button"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 border border-[#CAA36B]/40 shadow-md flex items-center justify-center text-[#24211E] hover:bg-[#ECDCC2]"
+              aria-label="Fechar"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
-            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-semibold">
+            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-bold">
               Presente aos Noivos
             </span>
-            <h3 className="font-serif text-2xl font-medium mt-1 mb-2">
+            <h3 className="font-serif text-2xl font-medium mt-1 mb-2 pr-8">
               Chave Pix Direta
             </h3>
             <p className="text-xs text-[#665F56] mb-4">
-              Sua presença é o nosso maior presente! Se desejar nos abençoar com qualquer valor, use o Pix direto:
+              Sua presença é o nosso maior presente! Se desejar nos abençoar com qualquer valor, use a nossa chave Pix:
             </p>
 
             {/* QR Code */}
@@ -310,7 +332,7 @@ export const ConviteCardInterativo = () => {
             {/* Botão Copiar */}
             <button
               onClick={handleCopyPix}
-              className={`w-full py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
+              className={`w-full py-3.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all ${
                 copiedPix 
                   ? 'bg-[#56695B] text-white' 
                   : 'bg-[#CAA36B] hover:bg-[#9E7338] text-white shadow-xs'
@@ -328,38 +350,50 @@ export const ConviteCardInterativo = () => {
                 </>
               )}
             </button>
+
+            {/* Botão Fechar Inferior */}
+            <button
+              type="button"
+              onClick={() => setActiveModal(null)}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-[#7A746E] hover:text-[#24211E] bg-[#F4EFE1] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors mt-3"
+            >
+              ✕ Fechar Janela
+            </button>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* MODAL 2: LOCAL DO CASAMENTO (CERIMÔNIA & RECEPÇÃO) */}
-      {/* ============================================================== */}
       {activeModal === 'local' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-sm bg-[#FAF7F2] rounded-3xl border border-[#CAA36B]/40 shadow-2xl p-6 text-center text-[#24211E]">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveModal(null); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in"
+        >
+          <div className="relative w-full max-w-sm max-h-[90vh] bg-[#FAF7F2] rounded-3xl border-2 border-[#CAA36B]/50 shadow-2xl p-5 sm:p-6 text-center text-[#24211E] overflow-y-auto overscroll-contain">
             <button 
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-[#ECDCC2] text-[#756E65]"
+              type="button"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 border border-[#CAA36B]/40 shadow-md flex items-center justify-center text-[#24211E] hover:bg-[#ECDCC2]"
+              aria-label="Fechar"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
-            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-semibold">
+            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-bold">
               Como Chegar
             </span>
-            <h3 className="font-serif text-2xl font-medium mt-1 mb-1">
+            <h3 className="font-serif text-2xl font-medium mt-1 mb-1 pr-8">
               {WEDDING_DATA.venue.name}
             </h3>
-            <p className="text-xs text-[#56695B] font-medium bg-[#56695B]/10 py-1 px-3 rounded-full inline-block mb-3">
+            <p className="text-xs text-[#56695B] font-semibold bg-[#56695B]/10 py-1 px-3 rounded-full inline-block mb-3">
               Cerimônia e Recepção no mesmo local
             </p>
-            <p className="text-xs text-[#665F56] mb-5">
+            <p className="text-xs text-[#665F56] mb-5 leading-relaxed">
               {WEDDING_DATA.venue.address} • {WEDDING_DATA.venue.city}
             </p>
 
             <div className="space-y-2.5">
-              {/* Google Maps */}
+              {/* Google Maps Real */}
               <a 
                 href={WEDDING_DATA.venue.googleMapsUrl} 
                 target="_blank" 
@@ -402,28 +436,35 @@ export const ConviteCardInterativo = () => {
               </a>
             </div>
 
-            <p className="text-[10px] text-[#8E867E] mt-4">
-              * O local conta com estacionamento privativo e serviço de valet.
-            </p>
+            <button
+              type="button"
+              onClick={() => setActiveModal(null)}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-[#7A746E] hover:text-[#24211E] bg-[#F4EFE1] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors mt-4"
+            >
+              ✕ Fechar Janela
+            </button>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* MODAL 3: CONFIRMAR PRESENÇA (RSVP) */}
-      {/* ============================================================== */}
       {activeModal === 'rsvp' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-sm bg-[#FAF7F2] rounded-3xl border border-[#CAA36B]/40 shadow-2xl p-6 text-[#24211E]">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveModal(null); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in"
+        >
+          <div className="relative w-full max-w-sm max-h-[90vh] bg-[#FAF7F2] rounded-3xl border-2 border-[#CAA36B]/50 shadow-2xl p-5 sm:p-6 text-[#24211E] overflow-y-auto overscroll-contain">
             <button 
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-[#ECDCC2] text-[#756E65]"
+              type="button"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 border border-[#CAA36B]/40 shadow-md flex items-center justify-center text-[#24211E] hover:bg-[#ECDCC2]"
+              aria-label="Fechar"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
-            <div className="text-center mb-4">
-              <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-semibold">
+            <div className="text-center mb-4 pr-8">
+              <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-bold">
                 Confirmação de Presença
               </span>
               <h3 className="font-serif text-2xl font-medium mt-1">
@@ -436,7 +477,7 @@ export const ConviteCardInterativo = () => {
 
             <form onSubmit={handleSendRsvp} className="space-y-3 text-left">
               <div>
-                <label className="text-[11px] font-medium text-[#24211E] block mb-1">
+                <label className="text-[11px] font-semibold text-[#24211E] block mb-1">
                   Seu Nome Completo *
                 </label>
                 <input 
@@ -450,7 +491,7 @@ export const ConviteCardInterativo = () => {
               </div>
 
               <div>
-                <label className="text-[11px] font-medium text-[#24211E] block mb-1">
+                <label className="text-[11px] font-semibold text-[#24211E] block mb-1">
                   WhatsApp com DDD
                 </label>
                 <input 
@@ -463,7 +504,7 @@ export const ConviteCardInterativo = () => {
               </div>
 
               <div>
-                <label className="text-[11px] font-medium text-[#24211E] block mb-1">
+                <label className="text-[11px] font-semibold text-[#24211E] block mb-1">
                   Você irá comparecer?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -495,7 +536,7 @@ export const ConviteCardInterativo = () => {
 
               {guestAttending === 'yes' && (
                 <div>
-                  <label className="text-[11px] font-medium text-[#24211E] block mb-1">
+                  <label className="text-[11px] font-semibold text-[#24211E] block mb-1">
                     Quantas pessoas (incluindo você)?
                   </label>
                   <select 
@@ -518,28 +559,39 @@ export const ConviteCardInterativo = () => {
                 <Send className="w-3.5 h-3.5" />
                 Confirmar no WhatsApp dos Noivos
               </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-[#7A746E] hover:text-[#24211E] bg-[#F4EFE1] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors mt-1"
+              >
+                ✕ Fechar Janela
+              </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* MODAL 4: SALVAR NA AGENDA */}
-      {/* ============================================================== */}
       {activeModal === 'agenda' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-sm bg-[#FAF7F2] rounded-3xl border border-[#CAA36B]/40 shadow-2xl p-6 text-center text-[#24211E]">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveModal(null); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in"
+        >
+          <div className="relative w-full max-w-sm max-h-[90vh] bg-[#FAF7F2] rounded-3xl border-2 border-[#CAA36B]/50 shadow-2xl p-5 sm:p-6 text-center text-[#24211E] overflow-y-auto overscroll-contain">
             <button 
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-[#ECDCC2] text-[#756E65]"
+              type="button"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 border border-[#CAA36B]/40 shadow-md flex items-center justify-center text-[#24211E] hover:bg-[#ECDCC2]"
+              aria-label="Fechar"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
-            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-semibold">
+            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-bold">
               Save the Date
             </span>
-            <h3 className="font-serif text-2xl font-medium mt-1 mb-2">
+            <h3 className="font-serif text-2xl font-medium mt-1 mb-2 pr-8">
               Salvar na Agenda
             </h3>
             <p className="text-xs text-[#665F56] mb-5">
@@ -565,30 +617,41 @@ export const ConviteCardInterativo = () => {
                 Salvar no Apple iCal / iPhone (.ics)
               </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setActiveModal(null)}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-[#7A746E] hover:text-[#24211E] bg-[#F4EFE1] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors mt-4"
+            >
+              ✕ Fechar Janela
+            </button>
           </div>
         </div>
       )}
 
-      {/* ============================================================== */}
       {/* MODAL 5: TRAJE (DRESS CODE) */}
-      {/* ============================================================== */}
       {activeModal === 'traje' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
-          <div className="relative w-full max-w-sm bg-[#FAF7F2] rounded-3xl border border-[#CAA36B]/40 shadow-2xl p-6 text-center text-[#24211E]">
+        <div 
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveModal(null); }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in"
+        >
+          <div className="relative w-full max-w-sm max-h-[90vh] bg-[#FAF7F2] rounded-3xl border-2 border-[#CAA36B]/50 shadow-2xl p-5 sm:p-6 text-center text-[#24211E] overflow-y-auto overscroll-contain">
             <button 
               onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-full hover:bg-[#ECDCC2] text-[#756E65]"
+              type="button"
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-white/95 border border-[#CAA36B]/40 shadow-md flex items-center justify-center text-[#24211E] hover:bg-[#ECDCC2]"
+              aria-label="Fechar"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
 
-            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-semibold">
+            <span className="font-serif text-xs uppercase tracking-widest text-[#9E7338] font-bold">
               Guia de Estilo
             </span>
-            <h3 className="font-serif text-2xl font-medium mt-1 mb-1">
+            <h3 className="font-serif text-2xl font-medium mt-1 mb-1 pr-8">
               Dress Code
             </h3>
-            <p className="font-serif text-lg text-[#CAA36B] font-medium mb-3">
+            <p className="font-serif text-lg text-[#CAA36B] font-semibold mb-3">
               {WEDDING_DATA.dressCode.title}
             </p>
             
@@ -600,9 +663,17 @@ export const ConviteCardInterativo = () => {
               ✨ <strong>Lembrete carinhoso:</strong> Tons de branco, off-white e perolados são reservados exclusivamente para a nossa noiva.
             </div>
 
-            <p className="text-[11px] text-[#756E65] italic">
+            <p className="text-[11px] text-[#756E65] italic mb-4">
               {WEDDING_DATA.dressCode.footwearTip}
             </p>
+
+            <button
+              type="button"
+              onClick={() => setActiveModal(null)}
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold text-[#7A746E] hover:text-[#24211E] bg-[#F4EFE1] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors"
+            >
+              ✕ Fechar Janela
+            </button>
           </div>
         </div>
       )}

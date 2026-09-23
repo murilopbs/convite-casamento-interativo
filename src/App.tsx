@@ -36,8 +36,22 @@ export function App() {
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
+  // Travar o scroll da página enquanto o envelope estiver fechado no Modelo 1
+  useEffect(() => {
+    if (!isEnvelopeOpen && currentModel === 'modelo1') {
+      document.body.style.overflow = 'hidden';
+      window.scrollTo(0, 0);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isEnvelopeOpen, currentModel]);
+
   const switchModel = (model: 'modelo1' | 'modelo2') => {
     setCurrentModel(model);
+    window.scrollTo({ top: 0, behavior: 'instant' });
     if (model === 'modelo2') {
       window.history.pushState(null, '', '/convite2');
     } else {
@@ -47,6 +61,8 @@ export function App() {
 
   const handleOpenEnvelope = () => {
     setIsEnvelopeOpen(true);
+    document.body.style.overflow = '';
+    window.scrollTo({ top: 0, behavior: 'instant' });
     setTimeout(() => {
       audioPlayerRef.current?.playAudio();
     }, 400);
@@ -54,8 +70,9 @@ export function App() {
 
   const handleReopenEnvelope = () => {
     setIsEnvelopeOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
+
 
   return (
     <div className="relative min-h-screen bg-[#FAF7F2]">
