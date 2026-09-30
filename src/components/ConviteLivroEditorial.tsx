@@ -184,16 +184,16 @@ export const ConviteLivroEditorial: React.FC<ConviteLivroEditorialProps> = ({
       minHeight: 460,
       maxHeight: 780,
       drawShadow: true,
-      maxShadowOpacity: 0.45,
+      maxShadowOpacity: 0.35,
       showCover: false,
       usePortrait: true,
       mobileScrollSupport: false,
       clickEventForward: true,
       useMouseEvents: true,
-      swipeDistance: 20,
+      swipeDistance: 15,
       showPageCorners: true,
       disableFlipByClick: false,
-      flippingTime: 650,
+      flippingTime: 420,
     });
 
     const pages = bookContainerRef.current.querySelectorAll<HTMLElement>('.editorial-page-item');
@@ -466,7 +466,7 @@ export const ConviteLivroEditorial: React.FC<ConviteLivroEditorialProps> = ({
             {/* ======================================================== */}
             {/* LÂMINA 1: CAPA NOBRE (ESTILO VÍDEO MODELO 4)            */}
             {/* ======================================================== */}
-            <div className="editorial-page-item w-full h-full bg-[#FAF8F5] relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-5 text-center select-none border border-[#CAA36B]/30" data-density="hard">
+            <div className="editorial-page-item w-full h-full bg-[#FAF8F5] relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-5 text-center select-none border border-[#CAA36B]/30" data-density="soft">
               <div className="absolute inset-0 bg-paper opacity-85 pointer-events-none" />
 
               {/* Topo: Guirlanda Botânica e Monograma */}
@@ -501,16 +501,16 @@ export const ConviteLivroEditorial: React.FC<ConviteLivroEditorialProps> = ({
 
               {/* Rodapé da Capa com o Cantinho Convidativo */}
               <div className="relative z-10 pb-0.5 flex items-center justify-between text-[#7A746E] border-t border-[#CAA36B]/25 pt-2">
-                <span className="text-[10px] text-[#CAA36B] font-serif uppercase tracking-widest">
+                <span className="text-[10px] text-[#CAA36B] font-serif uppercase tracking-widest font-medium">
                   25 . 09 . 2027
                 </span>
 
                 <div 
                   onClick={flipNext}
-                  className="flex items-center gap-1 text-[10px] text-[#9E7338] font-medium animate-corner-breathe cursor-pointer hover:underline"
+                  className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#CAA36B]/20 hover:bg-[#CAA36B] hover:text-white text-[#9E7338] text-[10px] font-semibold animate-corner-breathe cursor-pointer transition-all shadow-2xs"
                 >
-                  <span>Puxe a folha</span>
-                  <span className="text-xs font-bold text-[#CAA36B]">➔</span>
+                  <span>Folhear Lâmina</span>
+                  <span className="text-xs font-bold">➔</span>
                 </div>
               </div>
             </div>
@@ -987,7 +987,7 @@ export const ConviteLivroEditorial: React.FC<ConviteLivroEditorialProps> = ({
             {/* ======================================================== */}
             {/* LÂMINA 8: CONTRACAPA & RECADINHO FINAL                  */}
             {/* ======================================================== */}
-            <div className="editorial-page-item w-full h-full bg-[#FAF8F5] relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-5 text-center select-none border border-[#CAA36B]/30" data-density="hard">
+            <div className="editorial-page-item w-full h-full bg-[#FAF8F5] relative overflow-hidden flex flex-col justify-between p-3.5 sm:p-5 text-center select-none border border-[#CAA36B]/30" data-density="soft">
               <div className="absolute inset-0 bg-paper opacity-85 pointer-events-none" />
 
               <div className="relative z-10 pt-1 space-y-1">

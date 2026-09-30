@@ -182,3 +182,30 @@ body {
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 50% 100%, 0 calc(100% - 12px));
 }
 
+/* GPU Hardware Acceleration & Containment for Page-Flip Engine (60/120 FPS) */
+.editorial-page-item {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform, clip-path;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.stf__item {
+  will-change: transform, clip-path !important;
+}
+
+@keyframes cornerBreathe {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-3px, -3px) rotate(-2deg);
+  }
+}
+
+.animate-corner-breathe {
+  animation: cornerBreathe 2.8s ease-in-out infinite;
+}
+
+
