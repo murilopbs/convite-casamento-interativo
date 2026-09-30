@@ -10,27 +10,42 @@ import { GiftsSection } from './components/GiftsSection';
 import { RsvpSection } from './components/RsvpSection';
 import { FooterSection } from './components/FooterSection';
 import { ConviteCardInterativo } from './components/ConviteCardInterativo';
-import { Sparkles, Layers } from 'lucide-react';
+import { LivretoInterativo } from './components/LivretoInterativo';
+import { Sparkles, Layers, BookOpen } from 'lucide-react';
 
 export function App() {
-  // Detecta se a rota atual é /convite2 ou hash #convite2
-  const isConvite2Initial = 
-    window.location.pathname.includes('/convite2') || 
-    window.location.hash.includes('convite2') ||
-    new URLSearchParams(window.location.search).get('modelo') === '2';
+  const getInitialModel = (): 'modelo1' | 'modelo2' | 'modelo3' => {
+    const path = window.location.pathname;
+    const hash = window.location.hash;
+    const params = new URLSearchParams(window.location.search);
+    
+    if (path.includes('/convite1') || hash.includes('convite1') || params.get('modelo') === '1') {
+      return 'modelo1';
+    }
+    if (path.includes('/convite2') || hash.includes('convite2') || params.get('modelo') === '2') {
+      return 'modelo2';
+    }
+    // Padrão: Modelo 3 (Novo Livreto Interativo)
+    return 'modelo3';
+  };
 
-  const [currentModel, setCurrentModel] = useState<'modelo1' | 'modelo2'>(
-    isConvite2Initial ? 'modelo2' : 'modelo1'
-  );
-
+  const [currentModel, setCurrentModel] = useState<'modelo1' | 'modelo2' | 'modelo3'>(getInitialModel);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioPlayerRef = useRef<AudioPlayerHandle | null>(null);
 
   // Sincroniza navegação de histórico / rota
   useEffect(() => {
     const handlePopState = () => {
-      const isC2 = window.location.pathname.includes('/convite2') || window.location.hash.includes('convite2');
-      setCurrentModel(isC2 ? 'modelo2' : 'modelo1');
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path.includes('/convite1') || hash.includes('convite1')) {
+        setCurrentModel('modelo1');
+      } else if (path.includes('/convite2') || hash.includes('convite2')) {
+        setCurrentModel('modelo2');
+      } else {
+        setCurrentModel('modelo3');
+      }
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -49,13 +64,15 @@ export function App() {
     };
   }, [isEnvelopeOpen, currentModel]);
 
-  const switchModel = (model: 'modelo1' | 'modelo2') => {
+  const switchModel = (model: 'modelo1' | 'modelo2' | 'modelo3') => {
     setCurrentModel(model);
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (model === 'modelo2') {
+    if (model === 'modelo3') {
+      window.history.pushState(null, '', '/');
+    } else if (model === 'modelo2') {
       window.history.pushState(null, '', '/convite2');
     } else {
-      window.history.pushState(null, '', '/');
+      window.history.pushState(null, '', '/convite1');
     }
   };
 
@@ -73,15 +90,36 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
-
   return (
     <div className="relative min-h-screen bg-[#FAF7F2]">
       
-      {/* SELETOR FLUTUANTE DE APRESENTAÇÃO (PARA O CLIENTE ESCOLHER OU COMPARAR OS 2 MODELOS) */}
-      <aside aria-label="Seletor de modelos de convite" className="fixed top-3 left-1/2 -translate-x-1/2 z-50 bg-[#24211E]/90 backdrop-blur-md p-1 rounded-full border border-[#CAA36B]/40 shadow-2xl flex items-center gap-1 text-xs">
+      {/* Player de Áudio Global sincronizado com a música "Pra Você Guardei o Amor" */}
+      <AudioPlayer 
+        ref={audioPlayerRef} 
+        onPlaybackChange={setIsMusicPlaying}
+        hideFloatingButton={currentModel === 'modelo3'}
+      />
+
+      {/* SELETOR FLUTUANTE DE APRESENTAÇÃO (PARA O CLIENTE COMPARAR OS 3 MODELOS) */}
+      <aside aria-label="Seletor de modelos de convite" className="fixed top-2.5 left-1/2 -translate-x-1/2 z-50 bg-[#24211E]/95 backdrop-blur-md p-1 rounded-full border border-[#CAA36B]/40 shadow-2xl flex items-center gap-1 text-[11px] max-w-[95vw] overflow-x-auto">
+        <button
+          onClick={() => switchModel('modelo3')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
+            currentModel === 'modelo3'
+              ? 'bg-[#CAA36B] text-white shadow-xs'
+              : 'text-[#ECDCC2] hover:text-white'
+          }`}
+        >
+          <BookOpen className="w-3 h-3 text-amber-300" />
+          <span>Modelo 3: Livreto & Selo</span>
+          <span className="hidden sm:inline-block px-1 py-0.2 bg-white/20 text-[9px] rounded-full uppercase font-bold tracking-wider">
+            Novo
+          </span>
+        </button>
+
         <button
           onClick={() => switchModel('modelo1')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
             currentModel === 'modelo1'
               ? 'bg-[#CAA36B] text-white shadow-xs'
               : 'text-[#ECDCC2] hover:text-white'
@@ -93,21 +131,32 @@ export function App() {
 
         <button
           onClick={() => switchModel('modelo2')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
             currentModel === 'modelo2'
               ? 'bg-[#CAA36B] text-white shadow-xs'
               : 'text-[#ECDCC2] hover:text-white'
           }`}
         >
           <Layers className="w-3 h-3" />
-          <span>Modelo 2: Convite Interativo (Mercado Livre)</span>
+          <span>Modelo 2: Cartão Interativo</span>
         </button>
       </aside>
 
       {/* ============================================================== */}
-      {/* MODELO 2: CONVITE INTERATIVO ESTILO CARTÃO (FOTO DE REFERÊNCIA) */}
+      {/* MODELO 3: LIVRETO INTERATIVO COM SELO DE CERA & FUNDO HD       */}
       {/* ============================================================== */}
-      {currentModel === 'modelo2' ? (
+      {currentModel === 'modelo3' ? (
+        <div className="pt-10">
+          <LivretoInterativo 
+            onPlayMusic={() => audioPlayerRef.current?.playAudio()}
+            isMusicPlaying={isMusicPlaying}
+            onToggleMusic={() => audioPlayerRef.current?.toggleAudio()}
+          />
+        </div>
+      ) : currentModel === 'modelo2' ? (
+        /* ============================================================== */
+        /* MODELO 2: CONVITE INTERATIVO ESTILO CARTÃO                     */
+        /* ============================================================== */
         <div className="pt-10">
           <ConviteCardInterativo />
         </div>

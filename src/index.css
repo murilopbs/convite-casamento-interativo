@@ -113,3 +113,72 @@ body {
 .sound-bar-2 { animation: soundWave 0.9s ease-in-out infinite 0.2s; }
 .sound-bar-3 { animation: soundWave 1.3s ease-in-out infinite 0.4s; }
 .sound-bar-4 { animation: soundWave 1.0s ease-in-out infinite 0.1s; }
+
+/* Ken Burns background zoom */
+@keyframes kenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-1%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.animate-ken-burns {
+  animation: kenBurns 25s ease-in-out infinite alternate;
+}
+
+/* Booklet 3D Perspective & Shadows */
+.perspective-book {
+  perspective: 2400px;
+}
+
+.book-shadow {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(202, 163, 107, 0.25),
+    0 10px 20px -5px rgba(36, 33, 30, 0.3);
+}
+
+.book-spine-gradient {
+  background: linear-gradient(
+    90deg, 
+    rgba(0, 0, 0, 0.18) 0%, 
+    rgba(0, 0, 0, 0.04) 20%, 
+    rgba(255, 255, 255, 0.12) 50%, 
+    rgba(0, 0, 0, 0.04) 80%, 
+    rgba(0, 0, 0, 0.18) 100%
+  );
+}
+
+.page-fold-shadow-left {
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.04) 15%,
+    transparent 100%
+  );
+}
+
+.page-fold-shadow-right {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.12) 0%,
+    rgba(0, 0, 0, 0.04) 15%,
+    transparent 100%
+  );
+}
+
+/* Wax Seal Break animation */
+@keyframes waxSealBreak {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2) rotate(6deg); opacity: 0.9; }
+  100% { transform: scale(0.6) rotate(-15deg); opacity: 0; }
+}
+
+.animate-wax-break {
+  animation: waxSealBreak 0.7s forwards cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Ribbon Bookmark */
+.ribbon-fold {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 50% 100%, 0 calc(100% - 12px));
+}
+

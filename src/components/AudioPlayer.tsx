@@ -4,39 +4,60 @@ import { WEDDING_DATA } from '../weddingData';
 
 export interface AudioPlayerHandle {
   playAudio: () => void;
+  pauseAudio: () => void;
+  toggleAudio: () => void;
 }
 
-export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
+interface AudioPlayerProps {
+  onPlaybackChange?: (isPlaying: boolean) => void;
+  hideFloatingButton?: boolean;
+}
+
+export const AudioPlayer = forwardRef<AudioPlayerHandle, AudioPlayerProps>(({ onPlaybackChange, hideFloatingButton = false }, ref) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const notifyChange = (playing: boolean) => {
+    setIsPlaying(playing);
+    onPlaybackChange?.(playing);
+  };
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      notifyChange(false);
+    } else {
+      audioRef.current.play()
+        .then(() => {
+          notifyChange(true);
+        })
+        .catch((e) => console.log('Playback error:', e));
+    }
+  };
 
   useImperativeHandle(ref, () => ({
     playAudio: () => {
       if (audioRef.current && !isPlaying) {
         audioRef.current.play()
           .then(() => {
-            setIsPlaying(true);
+            notifyChange(true);
           })
           .catch((err) => {
             console.log('Audio autoplay prevented by browser policy:', err);
           });
       }
+    },
+    pauseAudio: () => {
+      if (audioRef.current && isPlaying) {
+        audioRef.current.pause();
+        notifyChange(false);
+      }
+    },
+    toggleAudio: () => {
+      togglePlay();
     }
   }));
-
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play()
-        .then(() => {
-          setIsPlaying(true);
-        })
-        .catch((e) => console.log('Playback error:', e));
-    }
-  };
 
   useEffect(() => {
     // Definir volume suave (40%)
@@ -54,8 +75,9 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
         preload="auto"
       />
 
-      <div className="fixed bottom-5 right-5 z-40">
-        <button
+      {!hideFloatingButton && (
+        <div className="fixed bottom-5 right-5 z-40">
+          <button
           onClick={togglePlay}
           aria-label={isPlaying ? 'Pausar música ambiente' : 'Tocar música ambiente'}
           className="flex items-center gap-2.5 bg-[#FAF7F2]/90 backdrop-blur-md px-3.5 py-2 rounded-full border border-[#CAA36B]/40 shadow-lg hover:shadow-xl hover:border-[#CAA36B] transition-all duration-300 text-[#24211E] group"
@@ -78,8 +100,8 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
             <span className="text-[10px] uppercase tracking-wider text-[#9E7338] font-semibold">
               Trilha Sonora
             </span>
-            <span className="text-xs text-[#524B43] font-medium max-w-[120px] truncate">
-              {isPlaying ? 'Tocando...' : 'Ouvir Música'}
+            <span className="text-xs text-[#524B43] font-medium max-w-[150px] truncate">
+              {isPlaying ? WEDDING_DATA.music.title : 'Ouvir Música'}
             </span>
           </div>
 
@@ -88,6 +110,7 @@ export const AudioPlayer = forwardRef<AudioPlayerHandle>((_, ref) => {
           </div>
         </button>
       </div>
+      )}
     </>
   );
 });

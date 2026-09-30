@@ -58,8 +58,9 @@ export const WEDDING_DATA = {
   },
 
   music: {
-    url: "/assets/romantic-melody.mp3",
-    title: "Acoustic Romantic Symphony",
+    url: "/assets/pra-voce-guardei-o-amor.mp3",
+    title: "Pra Você Guardei o Amor",
+    artist: "Nando Reis & Ana Cañas",
   },
 
   photos: {
