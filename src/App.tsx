@@ -11,10 +11,11 @@ import { RsvpSection } from './components/RsvpSection';
 import { FooterSection } from './components/FooterSection';
 import { ConviteCardInterativo } from './components/ConviteCardInterativo';
 import { LivretoInterativo } from './components/LivretoInterativo';
-import { Sparkles, Layers, BookOpen } from 'lucide-react';
+import { ConviteLivroEditorial } from './components/ConviteLivroEditorial';
+import { Sparkles, Layers, BookOpen, Crown } from 'lucide-react';
 
 export function App() {
-  const getInitialModel = (): 'modelo1' | 'modelo2' | 'modelo3' => {
+  const getInitialModel = (): 'modelo1' | 'modelo2' | 'modelo3' | 'modelo4' => {
     const path = window.location.pathname;
     const hash = window.location.hash;
     const params = new URLSearchParams(window.location.search);
@@ -25,11 +26,14 @@ export function App() {
     if (path.includes('/convite2') || hash.includes('convite2') || params.get('modelo') === '2') {
       return 'modelo2';
     }
-    // Padrão: Modelo 3 (Novo Livreto Interativo)
-    return 'modelo3';
+    if (path.includes('/convite3') || hash.includes('convite3') || params.get('modelo') === '3') {
+      return 'modelo3';
+    }
+    // Padrão: Modelo 4 (Convite Livro Editorial - Tendência 2026/2027)
+    return 'modelo4';
   };
 
-  const [currentModel, setCurrentModel] = useState<'modelo1' | 'modelo2' | 'modelo3'>(getInitialModel);
+  const [currentModel, setCurrentModel] = useState<'modelo1' | 'modelo2' | 'modelo3' | 'modelo4'>(getInitialModel);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const audioPlayerRef = useRef<AudioPlayerHandle | null>(null);
@@ -43,8 +47,10 @@ export function App() {
         setCurrentModel('modelo1');
       } else if (path.includes('/convite2') || hash.includes('convite2')) {
         setCurrentModel('modelo2');
-      } else {
+      } else if (path.includes('/convite3') || hash.includes('convite3')) {
         setCurrentModel('modelo3');
+      } else {
+        setCurrentModel('modelo4');
       }
     };
     window.addEventListener('popstate', handlePopState);
@@ -64,11 +70,13 @@ export function App() {
     };
   }, [isEnvelopeOpen, currentModel]);
 
-  const switchModel = (model: 'modelo1' | 'modelo2' | 'modelo3') => {
+  const switchModel = (model: 'modelo1' | 'modelo2' | 'modelo3' | 'modelo4') => {
     setCurrentModel(model);
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (model === 'modelo3') {
+    if (model === 'modelo4') {
       window.history.pushState(null, '', '/');
+    } else if (model === 'modelo3') {
+      window.history.pushState(null, '', '/convite3');
     } else if (model === 'modelo2') {
       window.history.pushState(null, '', '/convite2');
     } else {
@@ -97,55 +105,78 @@ export function App() {
       <AudioPlayer 
         ref={audioPlayerRef} 
         onPlaybackChange={setIsMusicPlaying}
-        hideFloatingButton={currentModel === 'modelo3'}
+        hideFloatingButton={currentModel === 'modelo3' || currentModel === 'modelo4'}
       />
 
-      {/* SELETOR FLUTUANTE DE APRESENTAÇÃO (PARA O CLIENTE COMPARAR OS 3 MODELOS) */}
-      <aside aria-label="Seletor de modelos de convite" className="fixed top-2.5 left-1/2 -translate-x-1/2 z-50 bg-[#24211E]/95 backdrop-blur-md p-1 rounded-full border border-[#CAA36B]/40 shadow-2xl flex items-center gap-1 text-[11px] max-w-[95vw] overflow-x-auto">
+      {/* SELETOR FLUTUANTE DE APRESENTAÇÃO (PARA O CLIENTE COMPARAR OS 4 MODELOS) */}
+      <aside aria-label="Seletor de modelos de convite" className="fixed top-2 left-1/2 -translate-x-1/2 z-50 bg-[#24211E]/95 backdrop-blur-md p-1 rounded-full border border-[#CAA36B]/40 shadow-2xl flex items-center gap-1 text-[11px] max-w-[96vw] overflow-x-auto">
+        <button
+          onClick={() => switchModel('modelo4')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
+            currentModel === 'modelo4'
+              ? 'bg-[#CAA36B] text-white shadow-xs'
+              : 'text-[#ECDCC2] hover:text-white'
+          }`}
+        >
+          <Crown className="w-3 h-3 text-amber-300" />
+          <span>Modelo 4: Livro Editorial</span>
+          <span className="hidden sm:inline-block px-1 py-0.2 bg-white/20 text-[9px] rounded-full uppercase font-bold tracking-wider">
+            2026/27
+          </span>
+        </button>
+
         <button
           onClick={() => switchModel('modelo3')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
+          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
             currentModel === 'modelo3'
               ? 'bg-[#CAA36B] text-white shadow-xs'
               : 'text-[#ECDCC2] hover:text-white'
           }`}
         >
           <BookOpen className="w-3 h-3 text-amber-300" />
-          <span>Modelo 3: Livreto & Selo</span>
-          <span className="hidden sm:inline-block px-1 py-0.2 bg-white/20 text-[9px] rounded-full uppercase font-bold tracking-wider">
-            Novo
-          </span>
+          <span>Modelo 3: Livreto</span>
         </button>
 
         <button
           onClick={() => switchModel('modelo1')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
+          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
             currentModel === 'modelo1'
               ? 'bg-[#CAA36B] text-white shadow-xs'
               : 'text-[#ECDCC2] hover:text-white'
           }`}
         >
           <Sparkles className="w-3 h-3" />
-          <span>Modelo 1: Landing Page</span>
+          <span>Modelo 1: Landing</span>
         </button>
 
         <button
           onClick={() => switchModel('modelo2')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full font-medium transition-all shrink-0 ${
+          className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full font-medium transition-all shrink-0 cursor-pointer ${
             currentModel === 'modelo2'
               ? 'bg-[#CAA36B] text-white shadow-xs'
               : 'text-[#ECDCC2] hover:text-white'
           }`}
         >
           <Layers className="w-3 h-3" />
-          <span>Modelo 2: Cartão Interativo</span>
+          <span>Modelo 2: Cartão</span>
         </button>
       </aside>
 
       {/* ============================================================== */}
-      {/* MODELO 3: LIVRETO INTERATIVO COM SELO DE CERA & FUNDO HD       */}
+      {/* MODELO 4: CONVITE LIVRO EDITORIAL (TENDÊNCIA 2026/2027)        */}
       {/* ============================================================== */}
-      {currentModel === 'modelo3' ? (
+      {currentModel === 'modelo4' ? (
+        <div className="pt-8">
+          <ConviteLivroEditorial 
+            onPlayMusic={() => audioPlayerRef.current?.playAudio()}
+            isMusicPlaying={isMusicPlaying}
+            onToggleMusic={() => audioPlayerRef.current?.toggleAudio()}
+          />
+        </div>
+      ) : currentModel === 'modelo3' ? (
+        /* ============================================================== */
+        /* MODELO 3: LIVRETO INTERATIVO COM SELO DE CERA & FUNDO HD       */
+        /* ============================================================== */
         <div className="pt-10">
           <LivretoInterativo 
             onPlayMusic={() => audioPlayerRef.current?.playAudio()}
