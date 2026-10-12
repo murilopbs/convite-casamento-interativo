@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { CheckCircle2, XCircle, Send, Heart, CalendarClock } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { WEDDING_DATA } from '../weddingData';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const RsvpSection = () => {
   const [attending, setAttending] = useState<'yes' | 'no'>('yes');
@@ -228,6 +229,38 @@ export const RsvpSection = () => {
           </button>
         </form>
       )}
+
+      {/* Caixa de Perguntas / Validação da Confirmação de Presença */}
+      <SectionFeedbackBox
+        sectionId="rsvp"
+        sectionTitle="Confirmação de Presença (RSVP)"
+        questions={[
+          {
+            id: 'prazo_rsvp',
+            question: 'Prazo limite para confirmação (25 de Agosto de 2027): Está adequado para a contagem do buffet?',
+            options: [
+              'Sim, 1 mês de antecedência é o prazo ideal.',
+              'Prefiro estipular outra data para o encerramento das confirmações.',
+            ],
+          },
+          {
+            id: 'campos_formulario',
+            question: 'Campos do formulário (Nome, WhatsApp, Adultos, Crianças e Restrições): Coletam tudo o que vocês precisam?',
+            options: [
+              'Sim, coleta todos os dados necessários com clareza.',
+              'Gostaria de simplificar ou adicionar alguma pergunta aos convidados.',
+            ],
+          },
+          {
+            id: 'whatsapp_notificacao',
+            question: 'WhatsApp de recebimento: Para onde devem ir as mensagens dos convidados?',
+            options: [
+              'Podem enviar para o WhatsApp da noiva.',
+              'Vamos informar o WhatsApp oficial (noiva, noivo ou assessoria).',
+            ],
+          },
+        ]}
+      />
     </section>
   );
 };

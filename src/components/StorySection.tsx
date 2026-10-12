@@ -1,5 +1,6 @@
 import { Heart, Sparkles } from 'lucide-react';
 import { WEDDING_DATA } from '../weddingData';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const StorySection = () => {
   return (
@@ -16,6 +17,23 @@ export const StorySection = () => {
           <span className="h-[1px] w-12 bg-[#CAA36B]/40" />
           <Heart className="w-3.5 h-3.5 text-[#CAA36B] fill-[#CAA36B]/40" />
           <span className="h-[1px] w-12 bg-[#CAA36B]/40" />
+        </div>
+      </div>
+
+      {/* Foto Romântica Editorial da Trajetória do Casal */}
+      <div className="mb-12 max-w-xl mx-auto rounded-3xl overflow-hidden border-2 border-[#CAA36B]/30 shadow-xl bg-[#FAF7F2] p-2">
+        <div className="relative aspect-[16/10] sm:aspect-[16/9] rounded-2xl overflow-hidden group">
+          <img 
+            src={WEDDING_DATA.photos.storyPhoto} 
+            alt="Daniela e Edson juntos" 
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4 text-center text-white">
+            <p className="font-script text-2xl sm:text-3xl text-[#ECDCC2] drop-shadow-md">
+              "O destino nos uniu e o amor nos transformou"
+            </p>
+          </div>
         </div>
       </div>
 
@@ -48,6 +66,30 @@ export const StorySection = () => {
           </div>
         ))}
       </div>
+
+      {/* Caixa de Perguntas / Validação da Nossa História */}
+      <SectionFeedbackBox
+        sectionId="historia"
+        sectionTitle="Nossa História"
+        questions={[
+          {
+            id: 'marcos_anos',
+            question: 'Marcos e anos da história (2020, 2023, 2025): Os anos e textos resumem bem a trajetória de vocês?',
+            options: [
+              'Sim, estão perfeitos e contam nossa história com carinho!',
+              'Gostaria de ajustar as datas ou reescrever algum dos capítulos.',
+            ],
+          },
+          {
+            id: 'foto_trajetoria',
+            question: 'Foto do ensaio no meio da história: Gostou da foto do casal ilustrando a trajetória?',
+            options: [
+              'Sim, deu um toque muito especial e emocionante.',
+              'Prefiro sem foto nessa seção, apenas os cartões de texto.',
+            ],
+          },
+        ]}
+      />
     </section>
   );
 };

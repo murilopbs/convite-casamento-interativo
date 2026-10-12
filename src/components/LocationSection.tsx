@@ -1,5 +1,6 @@
 import { MapPin, Navigation, Car, ExternalLink, ShieldCheck } from 'lucide-react';
 import { WEDDING_DATA } from '../weddingData';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const LocationSection = () => {
   return (
@@ -13,7 +14,7 @@ export const LocationSection = () => {
           Local & Como Chegar
         </h2>
         <p className="text-sm text-[#756E65] max-w-md mx-auto">
-          Escolhemos um cenário acolhedor e cercado pela natureza para eternizar esse momento.
+          {WEDDING_DATA.venue.description}
         </p>
       </div>
 
@@ -25,17 +26,22 @@ export const LocationSection = () => {
             alt={WEDDING_DATA.venue.name}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
           
           <div className="absolute bottom-6 left-6 right-6 text-white">
-            <span className="inline-block bg-[#CAA36B] text-white text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-2">
-              Espaço da Cerimônia & Recepção
-            </span>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="inline-block bg-[#CAA36B] text-white text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full shadow-xs">
+                Endereço de Referência
+              </span>
+              <span className="inline-block bg-white/20 backdrop-blur-xs text-amber-200 text-[10px] sm:text-[11px] font-medium tracking-wide px-3 py-1 rounded-full border border-white/20">
+                Local Provisório
+              </span>
+            </div>
             <h3 className="font-serif text-3xl sm:text-4xl font-medium">
               {WEDDING_DATA.venue.name}
             </h3>
-            <p className="text-xs sm:text-sm text-[#ECDCC2] flex items-center gap-1.5 mt-1">
-              <MapPin className="w-4 h-4 shrink-0" />
+            <p className="text-xs sm:text-sm text-[#ECDCC2] flex items-center gap-1.5 mt-1 font-medium">
+              <MapPin className="w-4 h-4 shrink-0 text-[#CAA36B]" />
               {WEDDING_DATA.venue.address} • {WEDDING_DATA.venue.city}
             </p>
           </div>
@@ -120,6 +126,30 @@ export const LocationSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Caixa de Perguntas / Validação do Local */}
+      <SectionFeedbackBox
+        sectionId="local"
+        sectionTitle="Local & Como Chegar"
+        questions={[
+          {
+            id: 'endereco_provisorio',
+            question: 'Endereço provisório informado (Secretaria Municipal de Saúde, Planaltina - GO): Atende como referência temporária?',
+            options: [
+              'Sim, atende perfeitamente como referência provisória.',
+              'Prefiro ocultar o endereço agora e exibir apenas "Planaltina - GO (Local em breve)".',
+            ],
+          },
+          {
+            id: 'apps_navegacao',
+            question: 'Aplicativos de rotas (Google Maps, Waze e Uber direto): Gostaram dos atalhos de transporte?',
+            options: [
+              'Sim, super prático para os convidados traçarem a rota com 1 clique!',
+              'Prefiro manter apenas o Google Maps simples.',
+            ],
+          },
+        ]}
+      />
     </section>
   );
 };

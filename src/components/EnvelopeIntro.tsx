@@ -61,30 +61,39 @@ export const EnvelopeIntro = ({ onOpen, isOpen }: EnvelopeIntroProps) => {
       <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#CAA36B]/25 rounded-full blur-3xl pointer-events-none" />
 
       {/* Conteúdo Central do Envelope */}
-      <div className="relative w-full max-w-[460px] mx-auto flex flex-col items-center">
+      <div className="relative w-full max-w-[440px] mx-auto flex flex-col items-center">
         
+        {/* Logo Oficial do Casal no Topo */}
+        <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-1 transition-transform duration-500 hover:scale-105">
+          <img 
+            src={WEDDING_DATA.photos.logo} 
+            alt="Logo Daniela & Edson" 
+            className="w-full h-full object-contain drop-shadow-xs"
+          />
+        </div>
+
         {/* Título e Nomes Superiores com Grande Destaque */}
-        <div className="text-center mb-5">
-          <p className="font-script text-3xl sm:text-4xl text-[#CAA36B] tracking-wide mb-1">
+        <div className="text-center mb-4">
+          <p className="font-script text-2xl sm:text-3xl text-[#CAA36B] tracking-wide">
             Você foi convidado(a)
           </p>
           <h1 className="font-serif text-3xl sm:text-4xl tracking-widest text-[#24211E] uppercase font-medium">
             {WEDDING_DATA.couple.bride} & {WEDDING_DATA.couple.groom}
           </h1>
-          <p className="text-xs text-[#7A746E] tracking-wider uppercase mt-0.5">
+          <p className="text-[11px] sm:text-xs text-[#7A746E] tracking-wider uppercase mt-0.5">
             {WEDDING_DATA.couple.brideFullName} & {WEDDING_DATA.couple.groomFullName}
           </p>
-          <div className="flex items-center justify-center gap-3 mt-2">
-            <span className="h-[1px] w-14 bg-[#CAA36B]/50" />
-            <Heart className="w-3.5 h-3.5 text-[#CAA36B] fill-[#CAA36B]" />
-            <span className="h-[1px] w-14 bg-[#CAA36B]/50" />
+          <div className="flex items-center justify-center gap-3 mt-1.5">
+            <span className="h-[1px] w-12 bg-[#CAA36B]/50" />
+            <Heart className="w-3 h-3 text-[#CAA36B] fill-[#CAA36B]" />
+            <span className="h-[1px] w-12 bg-[#CAA36B]/50" />
           </div>
         </div>
 
-        {/* Envelope 3D Grande e Responsivo */}
+        {/* Envelope 3D Grande e Perfeitamente Responsivo */}
         <div 
           onClick={handleSealClick}
-          className="relative w-full aspect-[4/3] bg-[#F4EFE1] rounded-3xl shadow-2xl border-2 border-[#CAA36B]/40 cursor-pointer overflow-hidden p-6 sm:p-8 flex flex-col justify-between group transition-all duration-500 hover:shadow-[0_25px_60px_rgba(202,163,107,0.35)] hover:-translate-y-1 active:scale-[0.98]"
+          className="relative w-full min-h-[380px] sm:min-h-[420px] bg-[#F4EFE1] rounded-3xl shadow-2xl border-2 border-[#CAA36B]/40 cursor-pointer overflow-hidden p-5 sm:p-7 flex flex-col justify-between group transition-all duration-500 hover:shadow-[0_25px_60px_rgba(202,163,107,0.35)] hover:-translate-y-1 active:scale-[0.98]"
         >
           {/* Aba Superior do Envelope (Triângulo com perspectiva) */}
           <div 
@@ -105,13 +114,13 @@ export const EnvelopeIntro = ({ onOpen, isOpen }: EnvelopeIntroProps) => {
           />
 
           {/* Detalhe de linha dourada interna */}
-          <div className="relative z-10 border border-[#CAA36B]/30 rounded-2xl p-5 sm:p-6 h-full flex flex-col items-center justify-between text-center bg-[#FAF7F2]/90 backdrop-blur-xs">
+          <div className="relative z-10 border border-[#CAA36B]/30 rounded-2xl p-4 sm:p-5 h-full flex flex-col items-center justify-between text-center bg-[#FAF7F2]/90 backdrop-blur-xs">
             
             <div className="pt-1">
-              <span className="font-serif text-xs uppercase tracking-[0.25em] text-[#9E7338] font-bold">
+              <span className="font-serif text-[11px] sm:text-xs uppercase tracking-[0.25em] text-[#9E7338] font-bold">
                 Celebração de Casamento
               </span>
-              <p className="font-serif text-lg sm:text-xl text-[#24211E] mt-1 font-semibold">
+              <p className="font-serif text-lg sm:text-xl text-[#24211E] mt-0.5 font-semibold">
                 {WEDDING_DATA.date.formattedDay} de {WEDDING_DATA.date.formattedMonth}, {WEDDING_DATA.date.formattedYear}
               </p>
               <p className="text-xs sm:text-sm text-[#7A746E] font-medium">
@@ -119,9 +128,9 @@ export const EnvelopeIntro = ({ onOpen, isOpen }: EnvelopeIntroProps) => {
               </p>
             </div>
 
-            {/* Selo de Cera 3D Central */}
+            {/* Selo de Cera 3D Central com Redimensionamento Perfeito */}
             <div className="relative my-2 sm:my-3 flex flex-col items-center">
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full wax-seal-pulse transition-transform duration-300 group-hover:scale-105 active:scale-95 shadow-2xl">
+              <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full wax-seal-pulse transition-transform duration-300 group-hover:scale-105 active:scale-95 shadow-2xl overflow-hidden border border-[#CAA36B]/40">
                 <img 
                   src={WEDDING_DATA.photos.waxSeal} 
                   alt="Selo de Cera dos Noivos" 
@@ -129,28 +138,23 @@ export const EnvelopeIntro = ({ onOpen, isOpen }: EnvelopeIntroProps) => {
                 />
                 
                 {/* Brilho dourado reflexivo */}
-                <div className="absolute inset-0 rounded-full bg-radial from-white/20 via-transparent to-black/20 pointer-events-none" />
+                <div className="absolute inset-0 rounded-full bg-radial from-white/25 via-transparent to-black/25 pointer-events-none" />
               </div>
 
-              {/* Botão com ALTO CONTRASTE e FONTE GRANDE para celular */}
-              <div className="mt-3 bg-[#24211E] hover:bg-black text-[#ECDCC2] px-5 py-2.5 rounded-full border-2 border-[#CAA36B] shadow-lg flex items-center gap-2 transition-transform group-hover:scale-105">
-                <Sparkles className="w-4 h-4 text-[#CAA36B] animate-spin" style={{ animationDuration: '4s' }} />
-                <span className="text-xs sm:text-sm font-bold tracking-wider uppercase">
+              {/* Botão de Toque / Abertura Harmonioso */}
+              <div className="mt-2.5 bg-[#24211E] hover:bg-black text-[#ECDCC2] px-4 py-2 rounded-full border border-[#CAA36B] shadow-md flex items-center gap-2 transition-transform group-hover:scale-105">
+                <Sparkles className="w-3.5 h-3.5 text-[#CAA36B] animate-spin" style={{ animationDuration: '4s' }} />
+                <span className="text-[11px] sm:text-xs font-bold tracking-wider uppercase">
                   Toque no selo para abrir
                 </span>
               </div>
             </div>
 
-            <p className="font-script text-2xl text-[#CAA36B] pb-1">
+            <p className="font-script text-2xl text-[#CAA36B] pb-0.5">
               Com amor, {WEDDING_DATA.couple.bride} & {WEDDING_DATA.couple.groom}
             </p>
           </div>
         </div>
-
-        {/* Instrução inferior nítida */}
-        <p className="text-xs text-[#7A746E] mt-4 tracking-wide text-center font-medium">
-          ✨ Experiência interativa com música e navegação
-        </p>
       </div>
     </div>
   );

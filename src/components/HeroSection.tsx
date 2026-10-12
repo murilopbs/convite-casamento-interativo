@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Download, Heart } from 'lucide-react';
 import { WEDDING_DATA } from '../weddingData';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const HeroSection = () => {
   // Contagem regressiva precisa
@@ -37,9 +38,9 @@ export const HeroSection = () => {
 
   // Gerador de link do Google Calendar
   const getGoogleCalendarUrl = () => {
-    // 2026-11-21T16:30:00 -> 20261121T193000Z (considerando UTC)
-    const startDate = "20261121T193000Z";
-    const endDate = "20261122T030000Z";
+    // 25/09/2027 16:30 BRT -> 19:30 UTC
+    const startDate = "20270925T193000Z";
+    const endDate = "20270926T040000Z";
     const title = encodeURIComponent(WEDDING_DATA.date.calendarSummary);
     const details = encodeURIComponent(WEDDING_DATA.date.calendarDescription);
     const location = encodeURIComponent(`${WEDDING_DATA.venue.name}, ${WEDDING_DATA.venue.address}, ${WEDDING_DATA.venue.city}`);
@@ -52,14 +53,14 @@ export const HeroSection = () => {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Casamento Daniela e Edshow//PT-BR',
+      'PRODID:-//Casamento Daniela e Edson//PT-BR',
       'CALSCALE:GREGORIAN',
       'BEGIN:VEVENT',
-      'SUMMARY:Casamento Daniela & Edshow',
+      'SUMMARY:Casamento Daniela & Edson',
       `DESCRIPTION:${WEDDING_DATA.date.calendarDescription}`,
-      `LOCATION:${WEDDING_DATA.venue.name} - ${WEDDING_DATA.venue.address}`,
-      'DTSTART:20261121T163000',
-      'DTEND:20261122T040000',
+      `LOCATION:${WEDDING_DATA.venue.name} - ${WEDDING_DATA.venue.address}, ${WEDDING_DATA.venue.city}`,
+      'DTSTART:20270925T163000',
+      'DTEND:20270926T040000',
       'STATUS:CONFIRMED',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -68,23 +69,32 @@ export const HeroSection = () => {
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
     const link = document.createElement('a');
     link.href = window.URL.createObjectURL(blob);
-    link.setAttribute('download', 'casamento-daniela-e-edshow.ics');
+    link.setAttribute('download', 'casamento-daniela-e-edson.ics');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
   return (
-    <section className="relative pt-12 pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
+    <section className="relative pt-6 pb-20 px-4 sm:px-6 max-w-5xl mx-auto flex flex-col items-center text-center">
+      {/* Logo Oficial do Casório Dani & Edson */}
+      <div className="w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-3 transition-transform duration-500 hover:scale-105">
+        <img 
+          src={WEDDING_DATA.photos.logo} 
+          alt="Logo Oficial Daniela & Edson" 
+          className="w-full h-full object-contain drop-shadow-xs"
+        />
+      </div>
+
       {/* Detalhe Superior de Boas-Vindas */}
-      <div className="mb-4 inline-flex items-center gap-2 bg-[#F4EFE1] px-4 py-1.5 rounded-full border border-[#CAA36B]/30 shadow-xs">
+      <div className="mb-3 inline-flex items-center gap-2 bg-[#F4EFE1] px-4 py-1.5 rounded-full border border-[#CAA36B]/30 shadow-xs">
         <Heart className="w-3.5 h-3.5 text-[#CAA36B] fill-[#CAA36B]" />
         <span className="font-serif uppercase tracking-[0.2em] text-[11px] font-semibold text-[#8C6228]">
           Celebração de Casamento
         </span>
       </div>
 
-      <p className="font-script text-4xl sm:text-5xl text-[#CAA36B] mb-2">
+      <p className="font-script text-3xl sm:text-5xl text-[#CAA36B] mb-2">
         {WEDDING_DATA.couple.subtitle}
       </p>
 
@@ -97,20 +107,20 @@ export const HeroSection = () => {
         "{WEDDING_DATA.couple.quote}"
       </p>
 
-      {/* Foto Editorial de Casal em Destaque */}
-      <div className="relative w-full max-w-2xl aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#FAF7F2] mb-10 group">
+      {/* Foto Principal do Casal com Moldura Editorial Perfeita (Aspecto Retrato) */}
+      <div className="relative w-full max-w-md sm:max-w-lg aspect-[3/4] sm:aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#FAF7F2] mb-10 group bg-[#F4EFE1]">
         <img 
           src={WEDDING_DATA.photos.hero} 
           alt={`${WEDDING_DATA.couple.bride} e ${WEDDING_DATA.couple.groom}`}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
         />
         
         {/* Gradiente sutil */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
         {/* Monograma flutuante no canto */}
         <div className="absolute bottom-5 left-5 text-left text-white drop-shadow-md">
-          <p className="font-serif text-2xl tracking-widest uppercase">
+          <p className="font-serif text-2xl tracking-widest uppercase font-semibold">
             {WEDDING_DATA.couple.monogram}
           </p>
           <p className="text-xs uppercase tracking-widest text-[#ECDCC2]">
@@ -118,8 +128,8 @@ export const HeroSection = () => {
           </p>
         </div>
 
-        <div className="absolute bottom-5 right-5 hidden sm:block bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs text-[#FAF7F2] border border-white/20">
-          📍 {WEDDING_DATA.venue.name}
+        <div className="absolute bottom-5 right-5 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs text-[#FAF7F2] border border-white/20">
+          📍 {WEDDING_DATA.venue.city}
         </div>
       </div>
 
@@ -222,6 +232,9 @@ export const HeroSection = () => {
         <a href="#localizacao" className="px-3.5 py-1.5 rounded-full bg-[#FAF7F2] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors">
           Como Chegar
         </a>
+        <a href="#dresscode" className="px-3.5 py-1.5 rounded-full bg-[#FAF7F2] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors">
+          Dress Code
+        </a>
         <a href="#presentes" className="px-3.5 py-1.5 rounded-full bg-[#FAF7F2] hover:bg-[#ECDCC2] border border-[#CAA36B]/30 transition-colors">
           Lista de Presentes Pix
         </a>
@@ -229,6 +242,38 @@ export const HeroSection = () => {
           Confirmar Presença
         </a>
       </div>
+
+      {/* Caixa de Perguntas / Validação da Capa Principal */}
+      <SectionFeedbackBox
+        sectionId="hero"
+        sectionTitle="Capa Principal & Foto"
+        questions={[
+          {
+            id: 'foto_principal',
+            question: 'Foto principal do casal: O que acharam da foto e do enquadramento de vocês dois?',
+            options: [
+              'Aprovada! O enquadramento ficou lindo e valorizou nós dois.',
+              'Gostaria de testar outra foto (vamos enviar um novo arquivo).',
+            ],
+          },
+          {
+            id: 'frase_romantica',
+            question: 'Frase dos noivos: A frase atual ("O amor não se vê com os olhos, mas com o coração") reflete vocês dois?',
+            options: [
+              'Sim, perfeita! Podemos manter essa frase.',
+              'Queremos sugerir outra frase ou versículo próprio.',
+            ],
+          },
+          {
+            id: 'logo_apresentacao',
+            question: 'Logo e nomes no topo: A apresentação com a logo oficial e o monograma atendeu às expectativas?',
+            options: [
+              'Sim, muito elegante e combinou com o estilo do nosso casamento.',
+              'Gostaria de ajustes no tamanho ou no posicionamento.',
+            ],
+          },
+        ]}
+      />
     </section>
   );
 };

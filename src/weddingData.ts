@@ -43,18 +43,20 @@ export const WEDDING_DATA = {
     formattedTime: "16:30",
     fullDateDisplay: "Sábado, 25 de Setembro de 2027 às 16h30",
     calendarSummary: "Casamento Daniela & Édson",
-    calendarDescription: "Cerimônia e Recepção de Casamento de Daniela Borges Meneses e Édson Martins da Silva no Sítio Verde Flor. Estamos muito felizes em celebrar este dia com você!",
+    calendarDescription: "Cerimônia e Recepção de Casamento de Daniela Borges Meneses e Édson Martins da Silva. Estamos muito felizes em celebrar este dia com você!",
   },
 
   venue: {
-    name: "Sítio Verde Flor",
-    description: "Um espaço aconchegante cercado pela natureza para celebrar momentos únicos e inesquecíveis.",
-    address: "DF-128, km 4/5 (sentido Planaltina-GO) - Próximo ao Posto da Polícia Rodoviária",
-    city: "Planaltina - DF",
+    name: "Secretaria Municipal de Saúde",
+    isProvisional: true,
+    provisionalNote: "Local provisório informado para referência enquanto os noivos definem o espaço oficial.",
+    description: "Endereço de referência em Planaltina - GO. O local definitivo da festa será anunciado em breve!",
+    address: "Área Especial 04, nº 04, Centro",
+    city: "Planaltina - GO",
     image: "/assets/venue.jpg",
-    googleMapsUrl: "https://maps.app.goo.gl/w5LhhDMeNQ1e5iKCA",
-    wazeUrl: "https://waze.com/ul?q=Sitio%20Verde%20Flor%20Planaltina%20DF&navigate=yes",
-    uberUrl: "https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=DF-128%20km%204/5%20Planaltina%20DF&dropoff[nickname]=Sitio%20Verde%20Flor",
+    googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Secretaria+Municipal+de+Saude+Planaltina+GO",
+    wazeUrl: "https://waze.com/ul?q=Secretaria%20Municipal%20de%20Saude%20Planaltina%20GO&navigate=yes",
+    uberUrl: "https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=Area%20Especial%2004%2C%20Centro%2C%20Planaltina%20-%20GO&dropoff[nickname]=Secretaria%20Municipal%20de%20Saude",
   },
 
   music: {
@@ -64,7 +66,9 @@ export const WEDDING_DATA = {
   },
 
   photos: {
-    hero: "/assets/couple.jpg",
+    hero: "/assets/principal.jpeg",
+    couple: "/assets/principal.jpeg",
+    storyPhoto: "/assets/couple.jpg",
     waxSeal: "/assets/wax_seal.jpg",
     logo: "/assets/logo_dani_edson.png",
     venue: "/assets/venue.jpg",
@@ -72,21 +76,35 @@ export const WEDDING_DATA = {
 
   dressCode: {
     title: "Passeio Completo / Traje Social",
-    subtitle: "Queremos que você se sinta elegante e confortável para celebrar do início ao fim!",
+    subtitle: "Queremos que você se sinta elegante, radiante e confortável para celebrar do início ao fim!",
     guidelines: [
-      { label: "Mulheres", description: "Vestidos longos ou midi elegantes, tecidos fluidos e sapatos confortáveis para curtir a festa no campo." },
+      { label: "Mulheres", description: "Vestidos longos ou midi elegantes, tecidos fluidos e sapatos que permitam dançar a noite inteira." },
       { label: "Homens", description: "Terno completo ou costume com camisa social, sapato social e gravata opcional." },
     ],
-    gentleReminder: "Lembramos com carinho que o branco, off-white e tons perolados são reservados exclusivamente para a nossa noiva. ✨",
+    reservedColors: [
+      {
+        name: "Terracota",
+        hex: "#B86B53",
+        role: "Exclusivo dos Padrinhos e Madrinhas",
+        description: "As madrinhas e padrinhos usarão a cor terracota. Pedimos com carinho aos demais convidados que evitem tons terracota.",
+      },
+      {
+        name: "Branco & Off-White",
+        hex: "#F9F6F0",
+        role: "Exclusivo da Noiva",
+        description: "Branco, off-white, marfim e tons perolados são reservados com carinho e exclusividade para a nossa noiva.",
+      },
+    ],
     recommendedColors: [
       { name: "Verde Sálvia", hex: "#7E9084" },
-      { name: "Terracota", hex: "#B86B53" },
       { name: "Azul Serenity", hex: "#8DA4C4" },
       { name: "Champagne / Nude", hex: "#D8C7B0" },
-      { name: "Rosa Chá", hex: "#CCA4A4" },
+      { name: "Rosa Chá Suave", hex: "#CCA4A4" },
       { name: "Verde Oliva", hex: "#5C6B56" },
+      { name: "Lavanda Suave", hex: "#A299A8" },
     ],
-    footwearTip: "Dica amiga: O espaço do sítio possui áreas com gramado. Para maior conforto das convidadas, recomendamos salto bloco, anabela ou protetores de salto!",
+    footwearTip: "Dica amiga: Para o conforto de todos os convidados durante a celebração e na pista de dança, recomendamos sapatos confortáveis e salto bloco/anabela!",
+    gentleReminder: "Lembramos com carinho que o branco, off-white e tons perolados são reservados exclusivamente para a nossa noiva, e o tom terracota é reservado com exclusividade para as madrinhas e padrinhos. ✨",
   },
 
   timeline: [

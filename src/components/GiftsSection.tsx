@@ -3,6 +3,7 @@ import { Gift, Heart, Copy, Check, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { WEDDING_DATA, type GiftQuota } from '../weddingData';
 import { PixModal } from './PixModal';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const GiftsSection = () => {
   const [selectedGift, setSelectedGift] = useState<GiftQuota | null>(null);
@@ -143,6 +144,30 @@ export const GiftsSection = () => {
       <PixModal 
         gift={selectedGift} 
         onClose={() => setSelectedGift(null)} 
+      />
+
+      {/* Caixa de Perguntas / Validação dos Presentes Pix */}
+      <SectionFeedbackBox
+        sectionId="presentes"
+        sectionTitle="Lista de Presentes & Cotas Pix"
+        questions={[
+          {
+            id: 'cotas_lua_de_mel',
+            question: 'Cotas de presentes e Lua de Mel: As opções atuais (Drinks, Jantar, Barco, SPA, Hotel, Cota Livre) agradam vocês?',
+            options: [
+              'Sim, muito divertidas, leves e com valores acessíveis para todos!',
+              'Gostaria de sugerir outros presentes ou alterar os valores.',
+            ],
+          },
+          {
+            id: 'chave_pix_titular',
+            question: 'Chave Pix e Titular: A chave e nome exibidos estão corretos para o recebimento?',
+            options: [
+              'Sim, os dados do Pix estão corretos.',
+              'Vamos enviar nossa chave Pix definitiva para atualizar.',
+            ],
+          },
+        ]}
       />
     </section>
   );

@@ -1,5 +1,6 @@
 import { Users, Heart, Wine, Utensils, Music, Clock } from 'lucide-react';
 import { WEDDING_DATA } from '../weddingData';
+import { SectionFeedbackBox } from './SectionFeedbackBox';
 
 export const TimelineSection = () => {
   const getIcon = (iconName: string) => {
@@ -77,6 +78,30 @@ export const TimelineSection = () => {
           * Pedimos a gentileza de chegar com 15 minutos de antecedência para desfrutar do welcome drink.
         </p>
       </div>
+
+      {/* Caixa de Perguntas / Validação da Programação */}
+      <SectionFeedbackBox
+        sectionId="programacao"
+        sectionTitle="Programação do Grande Dia"
+        questions={[
+          {
+            id: 'horarios_cronograma',
+            question: 'Horários da celebração (16h30 Recepção, 17h00 Cerimônia, 18h15 Coquetel, 20h00 Jantar, 21h30 Festa): Estão de acordo com o planejado?',
+            options: [
+              'Sim, manter assim até a definição final com o cerimonial.',
+              'Gostaria de alterar ou ajustar algum dos horários.',
+            ],
+          },
+          {
+            id: 'momentos_especiais',
+            question: 'Momentos do cronograma: Gostaram das etapas e dos textos descritivos?',
+            options: [
+              'Sim, muito claros e acolhedores para os convidados.',
+              'Gostaria de incluir ou renomear algum momento especial.',
+            ],
+          },
+        ]}
+      />
     </section>
   );
 };
